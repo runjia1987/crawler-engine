@@ -59,7 +59,6 @@ public class EngineClient {
 			@Override
 	         public void handleDelivery(String consumerTag, Envelope envelope,
 	                 AMQP.BasicProperties properties, byte[] body)  throws IOException {
-	        	 logger.info("message received, " + body.length);
 	             pool.submit(new Task(body));
 	         }
 

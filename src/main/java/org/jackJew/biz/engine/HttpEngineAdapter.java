@@ -99,9 +99,10 @@ public class HttpEngineAdapter {
 				.setCookieSpec(CookieSpecs.DEFAULT);		
 		RequestConfig requestConfig = rcBuilder.build();
 
+		String proxyHost = null, proxyPort = null;
 		if(!hasNoConfig) {
-			config.remove(CONFIG_KEY_PROXY_HOST);
-			config.remove(CONFIG_KEY_PROXY_PORT);
+			proxyHost = config.remove(CONFIG_KEY_PROXY_HOST);
+			proxyPort = config.remove(CONFIG_KEY_PROXY_PORT);
 			config.remove(CONFIG_KEY_USER_AGENT);
 			config.remove(CONFIG_BIZ_TYPE);
 		}
@@ -113,9 +114,8 @@ public class HttpEngineAdapter {
 				.setRetryHandler(new DefaultHttpRequestRetryHandler(0, false))
 				.setUserAgent(userAgent);
 		
-		if(!hasNoConfig && config.containsKey(CONFIG_KEY_PROXY_HOST)) {
-			builder.setProxy(new HttpHost(config.get(CONFIG_KEY_PROXY_HOST),
-							Integer.valueOf(config.get(CONFIG_KEY_PROXY_PORT))));			
+		if(!BaseUtils.isEmpty(proxyHost)) {
+			builder.setProxy(new HttpHost(proxyHost, Integer.valueOf(proxyPort)));			
 		}
 		CloseableHttpClient httpClient = builder.build();
 		return httpClient;
