@@ -1,0 +1,9 @@
+net start RabbitMQ
+
+rabbitmqctl -q status
+rabbitmqctl list_queues
+
+rabbitmq-plugins enable rabbitmq_management
+http://127.0.0.1:15672
+
+{taskId:"0", bizType: "dangdang_shopName", args: {url: "http://category.dangdang.com/cid4001867.html"}}

@@ -1,0 +1,26 @@
+<assembly>
+<id>assembly.1</id>
+  <formats>
+    <format>zip</format>
+  </formats>
+  <includeBaseDirectory>false</includeBaseDirectory>
+
+  <fileSets>
+  	<fileSet>
+  		<directory>target/libs</directory>
+  		<outputDirectory>./libs</outputDirectory>
+  		<excludes>
+  			<exclude>junit*.jar</exclude>
+  		</excludes>
+  	</fileSet>
+  </fileSets>
+
+  <files>
+  	<file>
+      <source>target/engineClient.jar</source>
+	  <outputDirectory>.</outputDirectory>
+    </file>
+  </files>
+
+
+</assembly>

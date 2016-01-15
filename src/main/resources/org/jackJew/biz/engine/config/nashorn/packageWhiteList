@@ -1,0 +1,6 @@
+java.lang
+org.jsoup
+org.jsoup.parser
+org.jsoup.select
+org.jsoup.nodes
+org.jsoup.helper
