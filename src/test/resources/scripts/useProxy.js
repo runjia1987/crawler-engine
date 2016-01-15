@@ -1,3 +1,5 @@
+"use strict";
+
 var rs = { rs:[], status: [] };
 var url = args.url;
 var charset = args.charset;

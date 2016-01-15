@@ -1,2 +1,5 @@
-pub1 = "123"
-pub2 = "abc"
+"use strict";
+
+// pub1 = "123"
+var pub1 = "123"
+var pub2 = "abc"

@@ -38,7 +38,7 @@ public class Task implements Runnable {
 			String script = BizScriptCacheService.getInstance().getScript(taskObject.getBizType());
 			if(BaseUtils.isEmpty(script)) {
 				return;
-			}			
+			}
 			Map<String, String> args = taskObject.getArgs();
 			JsonObject argsObject = new JsonObject();
 			argsObject.addProperty(HttpEngineAdapter.CONFIG_BIZ_TYPE, taskObject.getBizType());
@@ -54,7 +54,7 @@ public class Task implements Runnable {
 			
 			JsEngine jsEngine = JsEngineRhino.getInstance();
 			String result = jsEngine.runScript2JSON(scriptsBuffer.toString());
-			logger.info(EngineClient.CLIENT_NAME + " - " + taskObject.getTaskId() + ", " + argsStr);
+			logger.info(EngineClient.CLIENT_NAME + " - " + taskObject.getTaskId());
 			
 			// send reply
 			Reply reply = new Reply(taskObject.getTaskId(), result, (byte) (BaseUtils.isEmpty(result) ? 0 : 1));

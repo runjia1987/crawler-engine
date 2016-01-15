@@ -6,7 +6,7 @@ package org.jackJew.biz.engine;
  * For the sake of performance, scriptContext of all implementations are shared, 
  * so gloabl variables will be visible to all.
  * <br/>
- * So always follow "var v = x;" style in scripts.
+ * Ensure that follow "var v = x;" style in scripts.
  * @author Jack
  *
  */

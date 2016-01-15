@@ -1,3 +1,5 @@
+"use strict";
+
 var content = args.content;
     var rs = {rs:[], status:[]};
     var doc = jsoup.parse(content)

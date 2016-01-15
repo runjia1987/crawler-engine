@@ -17,7 +17,7 @@ import com.google.gson.JsonObject;
  * @author Jack
  *
  */
-public class PublicVarsVisibilityTest {
+public class GlobalVarsVisibilityTest {
 	
 	@Test
 	public void test() throws Exception {
@@ -31,10 +31,8 @@ public class PublicVarsVisibilityTest {
 		try {
 			String result = jsEngine.runScript2JSON(
 					String.format("(function(args){%s})(%s);", script, config.toString()));
-						
-			result = jsEngine.runScript2JSON(
-					String.format("(function(args){%s})(%s);", "return pub1;", config.toString()));
-			System.out.println(result);  // 123, global variable will be exported.
+			System.out.println(result);  // null		
+			// thanks to ES5 "use strict"; we will raise an error for non-var defined grammar
 			
 		} catch (Exception ex) {
 			System.out.println("catch exception. " + BaseUtils.getSimpleExMsg(ex));
