@@ -30,7 +30,7 @@ public class JsEngineNashorn implements JsEngine {
 	private NashornScriptEngine scriptEngine;
 	private SimpleScriptContext scriptContext;
 	
-	public final static String config_package = "org/jackJew/biz/engine/config/nashorn/";
+	private final static String config_package = "org/jackJew/biz/engine/config/nashorn/";
 	
 	public static JsEngineNashorn getInstance() {
 		return JsEngineNashornHolder.JS_ENGINE_NASHORN;

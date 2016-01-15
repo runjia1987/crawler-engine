@@ -36,13 +36,13 @@ public class BizScriptCacheService {
 	private ConcurrentMap<String, String> cache = new ConcurrentHashMap<>();
 	
 	private final static String script_exchange = PropertyReader.getProperty("script_exchange");
-	private final static String biz_script_url = PropertyReader.getProperty("biz_script_url");
+	public final static String BIZ_SCRIPT_URL = PropertyReader.getProperty("biz_script_url");
 	
 	/**
 	 * shared httpclient since the route is never changed.
 	 */
 	private final static CloseableHttpClient httpclient = HttpClients.custom()
-				.setUserAgent(HttpEngineAdapter.USER_AGENT).build();
+				.setUserAgent(HttpEngineAdapter.DEFAULT_USER_AGENT).build();
 	
 	private final static BizScriptCacheService instance = new BizScriptCacheService();
 	
@@ -97,7 +97,7 @@ public class BizScriptCacheService {
 	 */
 	private String getByHttp(String bizType) {
 		if(!BaseUtils.isEmpty(bizType)) {
-			HttpGet get = new HttpGet(biz_script_url + bizType);
+			HttpGet get = new HttpGet(BIZ_SCRIPT_URL + bizType);
 			try (CloseableHttpResponse response = httpclient.execute(get);){
 				if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 					byte[] bytes = BaseUtils.getBytes(response, 1 << 8);

@@ -47,12 +47,13 @@ public class HttpEngineAdapter {
 	
 	private final PoolingHttpClientConnectionManager connectionManager;
 	
-	public static final String USER_AGENT = PropertyReader.getProperty("User-Agent");	
+	public final static String CONFIG_KEY_USER_AGENT = "User-Agent";
+	public static final String DEFAULT_USER_AGENT = PropertyReader.getProperty(CONFIG_KEY_USER_AGENT);	
 	public final static int DEFAULT_TIMEOUT = 30000;
 	
-	public final static String CONFIG_KEY_USER_AGENT = "userAgent";
 	public final static String CONFIG_KEY_PROXY_HOST = "proxyHost";
 	public final static String CONFIG_KEY_PROXY_PORT = "proxyPort";
+	
 	
 	public final static String CONFIG_HEADER_CHARSET = "charset";
 	public final static String CONFIG_BIZ_TYPE = "bizType";
@@ -78,15 +79,18 @@ public class HttpEngineAdapter {
 
 	private CloseableHttpClient createClient(Map<String, String> config) {
 		boolean hasNoConfig = BaseUtils.isNullOrEmpty(config);
-		String userAgent = null;
-		if(hasNoConfig){			
-			userAgent = USER_AGENT;
-		} else {
+		if(hasNoConfig) {
+			config = new HashMap<>();
+		}
+		String userAgent = DEFAULT_USER_AGENT;
+		if(!hasNoConfig){
 			userAgent = config.get(CONFIG_KEY_USER_AGENT);
-			if(!BaseUtils.isEmpty(userAgent)) {
-				userAgent = USER_AGENT;
+			if(BaseUtils.isEmpty(userAgent)) {
+				userAgent = DEFAULT_USER_AGENT;
 			}
 		}
+		config.put(CONFIG_KEY_USER_AGENT, userAgent);
+		
 		String bizType = hasNoConfig ? null : config.get(CONFIG_BIZ_TYPE);
 		int timeout = DEFAULT_TIMEOUT;
 		if (LONG_BIZ_TYPE.equals(bizType)) {
@@ -103,7 +107,6 @@ public class HttpEngineAdapter {
 		if(!hasNoConfig) {
 			proxyHost = config.remove(CONFIG_KEY_PROXY_HOST);
 			proxyPort = config.remove(CONFIG_KEY_PROXY_PORT);
-			config.remove(CONFIG_KEY_USER_AGENT);
 			config.remove(CONFIG_BIZ_TYPE);
 		}
 		HttpClientBuilder builder = HttpClients.custom()
@@ -111,8 +114,7 @@ public class HttpEngineAdapter {
 				.setConnectionManagerShared(true)
 				.addInterceptorFirst(new CustomHttpRequestInterceptor(config))
 				.setDefaultRequestConfig(requestConfig)
-				.setRetryHandler(new DefaultHttpRequestRetryHandler(0, false))
-				.setUserAgent(userAgent);
+				.setRetryHandler(new DefaultHttpRequestRetryHandler(0, false));
 		
 		if(!BaseUtils.isEmpty(proxyHost)) {
 			builder.setProxy(new HttpHost(proxyHost, Integer.valueOf(proxyPort)));			

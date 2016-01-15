@@ -1,7 +1,12 @@
 package org.jackJew.biz.engine;
 
 /**
- * interface for JsEngine
+ * interface for JsEngine,
+ * <br />
+ * For the sake of performance, scriptContext of all implementations are shared, 
+ * so gloabl variables will be visible to all.
+ * <br/>
+ * So always follow "var v = x;" style in scripts.
  * @author Jack
  *
  */

@@ -30,7 +30,7 @@ public class JsEngineRhino implements JsEngine {
 	private static ContextFactory globalContextFactory;
 	private ScriptableObject sharedScriptObject;
 	
-	public final static String config_package = "org/jackJew/biz/engine/config/rhino/";
+	private final static String config_package = "org/jackJew/biz/engine/config/rhino/";
 	
 	public static JsEngineRhino getInstance() {
 		return JsEngineRhinoHolder.JS_ENGINE_RHINO;
@@ -45,7 +45,7 @@ public class JsEngineRhino implements JsEngine {
 		String line;
 		try(InputStream inputStream = cl.getResourceAsStream(config_package + "classWhiteList");
 			BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-			) {	
+			) {
 			while ((line = br.readLine()) != null) {
 				String className = line.trim();
 				logger.info("class: " + className);
