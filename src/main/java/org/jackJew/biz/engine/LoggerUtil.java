@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 
 public class LoggerUtil {
 	
-	private final static Logger logger = LoggerFactory.getLogger(EngineClient.CLIENT_NAME + "-LoggerUtil");
+	private final static Logger logger = LoggerFactory.getLogger(LoggerUtil.class);
 
 	public static LoggerUtil getInstance() {
 		return DebugMethodsHolder.LOGGER_UTIL;

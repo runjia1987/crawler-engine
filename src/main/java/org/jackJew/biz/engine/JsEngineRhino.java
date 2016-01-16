@@ -27,8 +27,8 @@ public class JsEngineRhino implements JsEngine {
 	private final static Set<String> classWhiteList = new HashSet<String>();
 	private final static Set<String> packageWhiteList = new HashSet<String>();
 	
-	private static ContextFactory globalContextFactory;
-	private ScriptableObject sharedScriptObject;
+	private final static ContextFactory globalContextFactory;
+	private final ScriptableObject sharedScriptObject;
 	
 	private final static String config_package = "org/jackJew/biz/engine/config/rhino/";
 	
@@ -97,8 +97,8 @@ public class JsEngineRhino implements JsEngine {
 
 	private JsEngineRhino() {
 		Context context = globalContextFactory.enterContext();
-		try {
-			sharedScriptObject = context.initStandardObjects();			
+		sharedScriptObject = context.initStandardObjects();
+		try {	
 			ScriptableObject.putConstProperty(sharedScriptObject, "$$http", HttpEngineAdapter.getInstance());
 			ScriptableObject.putConstProperty(sharedScriptObject, "$$system", SystemUtil.getInstance());
 			ScriptableObject.putConstProperty(sharedScriptObject, "log", LoggerUtil.getInstance());
@@ -135,18 +135,11 @@ public class JsEngineRhino implements JsEngine {
 
 	@Override
 	public String runScript2JSON(String script) throws Exception {
-		if (BaseUtils.isEmpty(script)) {
-			return null;
-		}
-		Context context = globalContextFactory.enterContext();
 		try {
-			Object result = ScriptableObject.callMethod(context, sharedScriptObject, "$$stringify",
-					new Object[] { runScript(script) });
-			return result.toString();
+			Object rawResult = runScript(script);
+			return BaseUtils.GSON.toJson(rawResult);
 		} catch (Exception ex) {
 			throw ex;
-		} finally {
-			Context.exit();
 		}
 	}
 

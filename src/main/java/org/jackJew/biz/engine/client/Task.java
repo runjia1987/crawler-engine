@@ -4,9 +4,11 @@ import java.util.Map;
 
 import org.jackJew.biz.engine.HttpEngineAdapter;
 import org.jackJew.biz.engine.JsEngine;
+import org.jackJew.biz.engine.JsEngineNashorn;
 import org.jackJew.biz.engine.JsEngineRhino;
 import org.jackJew.biz.engine.client.EngineClient.MessagePushService;
 import org.jackJew.biz.engine.util.BaseUtils;
+import org.jackJew.biz.engine.util.PropertyReader;
 import org.jackJew.biz.task.Constants;
 import org.jackJew.biz.task.Reply;
 import org.jackJew.biz.task.TaskObject;
@@ -25,6 +27,19 @@ public class Task implements Runnable {
 	private final static Logger logger = LoggerFactory.getLogger(Task.class);	
 	
 	private byte[] body;
+	
+	private final static JsEngine JS_ENGINE;
+	private final static String engineType = PropertyReader.getProperty("jsEngine");
+	
+	static {
+		if("nashorn".equalsIgnoreCase(engineType)) {
+			JS_ENGINE = JsEngineNashorn.getInstance();
+		} else if("rhino".equalsIgnoreCase(engineType)) {
+			JS_ENGINE = JsEngineRhino.getInstance();
+		} else {
+			throw new RuntimeException("no correct jsEngine is provided.");
+		}
+	}
 	
 	public Task(byte[] body) {
 		this.body = body;
@@ -52,8 +67,7 @@ public class Task implements Runnable {
 			String argsStr = argsObject.toString();
 			scriptsBuffer.append(script).append("})(").append(argsStr).append(")");
 			
-			JsEngine jsEngine = JsEngineRhino.getInstance();
-			String result = jsEngine.runScript2JSON(scriptsBuffer.toString());
+			String result = JS_ENGINE.runScript2JSON(scriptsBuffer.toString());
 			logger.info(EngineClient.CLIENT_NAME + " - " + taskObject.getTaskId());
 			
 			// send reply

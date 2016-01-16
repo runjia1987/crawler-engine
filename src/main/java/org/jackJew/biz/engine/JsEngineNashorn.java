@@ -27,8 +27,8 @@ public class JsEngineNashorn implements JsEngine {
 	
 	private final static Logger logger = LoggerFactory.getLogger(JsEngineNashorn.class);
 	
-	private NashornScriptEngine scriptEngine;
-	private SimpleScriptContext scriptContext;
+	private final NashornScriptEngine scriptEngine;
+	private final SimpleScriptContext scriptContext;
 	
 	private final static String config_package = "org/jackJew/biz/engine/config/nashorn/";
 	

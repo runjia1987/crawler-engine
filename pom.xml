@@ -62,9 +62,9 @@
 			<version>1.0</version>
 		</dependency>
 		<dependency>
-			<groupId>rhino</groupId>
-			<artifactId>js</artifactId>
-			<version>1.7R2</version>
+			<groupId>org.mozilla</groupId>
+			<artifactId>rhino</artifactId>
+			<version>1.7.6</version>
 		</dependency>
 		<!-- pub/sub messaging -->
 		<dependency>

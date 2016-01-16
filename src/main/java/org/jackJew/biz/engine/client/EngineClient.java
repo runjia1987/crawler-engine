@@ -46,6 +46,10 @@ public class EngineClient {
 			0L, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
 
 	public static void main(String[] args) throws Exception {
+		if(args == null || args.length == 0) {
+			System.err.println("clientName is required.");
+			System.exit(1);
+		}
 		CLIENT_NAME = args[0];
 		logger.info(CLIENT_NAME + " is starting... on queue " + queueName);
 		
