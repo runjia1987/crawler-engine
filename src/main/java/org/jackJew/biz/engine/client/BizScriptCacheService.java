@@ -44,6 +44,8 @@ public class BizScriptCacheService {
 	private final static CloseableHttpClient httpclient = HttpClients.custom()
 				.setUserAgent(HttpEngineAdapter.DEFAULT_USER_AGENT).build();
 	
+	private final static String deprecated_flag = "deprecated";
+	
 	private final static BizScriptCacheService instance = new BizScriptCacheService();
 	
 	private BizScriptCacheService() {
@@ -60,8 +62,11 @@ public class BizScriptCacheService {
 		        	 logger.info("script_exchange msg received." );
 		             BizScript bizScript = BaseUtils.GSON.fromJson(
 		            		 new String(body, Constants.CHARSET), BizScript.class);
-		             if(!bizScript.isDeleted() && !BaseUtils.isEmpty(bizScript.getScript())) {
-		 				cache.put(bizScript.getBizType(), bizScript.getScript());
+		             final String bizType = bizScript.getBizType();
+		             if(bizScript.isDeleted()) {
+		            	 cache.put(bizType, deprecated_flag);  // put flag to avoid retry getByHttp
+		             } else if(!BaseUtils.isEmpty(bizScript.getScript())) {
+		            	 cache.put(bizType, bizScript.getScript());
 		 			}
 		         }
 
@@ -83,6 +88,9 @@ public class BizScriptCacheService {
 	
 	public String getScript(String bizType) {
 		String script = cache.get(bizType);
+		if(deprecated_flag.equals(script)) {
+			return null;  // the bizType is deprecated.
+		}
 		if(BaseUtils.isEmpty(script)) {
 			script = getByHttp(bizType);
 			if(!BaseUtils.isEmpty(script)) {
