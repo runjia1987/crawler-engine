@@ -72,7 +72,7 @@ public class EngineClient {
 			 }
 	     };
 		channel.basicConsume(queueName, true, consumer);
-		// add hook when process is shutdown
+		// add hook when process exits or is interrupted.
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
         	try {
 				conn.close();
@@ -101,7 +101,8 @@ public class EngineClient {
 		private final List<Channel> channelsPool = new ArrayList<>(initialChannelsPoolSize);
 		private int channelsCount;
 		private final Random random = new Random(System.currentTimeMillis());
-		private static Connection conn;  // share
+		private static Connection conn;  // static but initialized in constructor, to avoid unnecessarily
+		// initialziation except until that we really need MQ connection.
 		
 		private final static MessagePushService instance = new MessagePushService();
 		
@@ -162,6 +163,7 @@ public class EngineClient {
 	}
 	
 	static class BizScriptConnectionHolder {
-		static Connection conn;
+		static Connection conn;  // static but initialized in constructor, to avoid unnecessarily
+		// initialziation except until that we really need MQ connection.
 	}
 }

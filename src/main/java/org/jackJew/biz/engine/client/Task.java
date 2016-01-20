@@ -64,8 +64,7 @@ public class Task implements Runnable {
 			}
 			// wrap script in closure
 			StringBuilder scriptsBuffer = new StringBuilder("(function(args){");
-			String argsStr = argsObject.toString();
-			scriptsBuffer.append(script).append("})(").append(argsStr).append(")");
+			scriptsBuffer.append(script).append("})(").append(argsObject.toString()).append(")");
 			
 			String result = JS_ENGINE.runScript2JSON(scriptsBuffer.toString());
 			logger.info(EngineClient.CLIENT_NAME + " - " + taskObject.getTaskId());
