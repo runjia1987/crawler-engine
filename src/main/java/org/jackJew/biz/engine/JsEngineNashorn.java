@@ -19,7 +19,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * JS script engine, based on JDK 8 Nashorn.
+ * JS script engine, based on JDK 8 Nashorn. --optimistic-types=true
+ * {@link https://blogs.oracle.com/nashorn/entry/nashorn_performance_work_in_the }
  * @author Jack
  *
  */
@@ -119,13 +120,14 @@ public class JsEngineNashorn implements JsEngine {
 	}
 	
 	/**
-	 * secutiry filter by className
-	 * @author Jack
+	 * secutiry filter by className, supported in JDK 1.8u40 and later.
+	 * {@link http://www.oracle.com/technetwork/java/javase/8u40-relnotes-2389089.html#newft } 
 	 *
 	 */
-	static class SecurityFilter {
+	static class SecurityFilter // implements ClassFilter 
+	{
 		
-		public void filter(String className) {
+		public void exposeToScripts(String s) { // argument is the name of the Java class or package
 			// TODO
 		}
 	}
