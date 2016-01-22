@@ -70,7 +70,7 @@ public class Task implements Runnable {
 			logger.info(EngineClient.CLIENT_NAME + " - " + taskObject.getTaskId());
 			
 			// send reply
-			Reply reply = new Reply(taskObject.getTaskId(), result, (byte) (BaseUtils.isEmpty(result) ? 0 : 1));
+			Reply reply = new Reply(taskObject.getTaskId(), taskObject.getBizType(), result);
 			MessagePushService.getInstance().publish(reply);
 			
 		} catch (Exception e) {

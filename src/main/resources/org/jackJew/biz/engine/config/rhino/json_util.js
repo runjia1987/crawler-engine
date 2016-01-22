@@ -1,3 +1,5 @@
+"use strict";
+
 if (!this.JSON) {
     this.JSON = {};
 }

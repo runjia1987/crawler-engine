@@ -1,3 +1,5 @@
+"use strict";
+
 var $$stringify = function(obj) {
     return JSON.stringify(obj);
 };

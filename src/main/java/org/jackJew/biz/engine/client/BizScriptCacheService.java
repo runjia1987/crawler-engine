@@ -60,14 +60,20 @@ public class BizScriptCacheService {
 		         public void handleDelivery(String consumerTag, Envelope envelope,
 		                 AMQP.BasicProperties properties, byte[] body)  throws IOException {
 		        	 logger.info("script_exchange msg received." );
-		             BizScript bizScript = BaseUtils.GSON.fromJson(
-		            		 new String(body, Constants.CHARSET), BizScript.class);
-		             final String bizType = bizScript.getBizType();
-		             if(bizScript.isDeleted()) {
-		            	 cache.put(bizType, deprecated_flag);  // put flag to avoid retry getByHttp
-		             } else if(!BaseUtils.isEmpty(bizScript.getScript())) {
-		            	 cache.put(bizType, bizScript.getScript());
-		 			}
+		        	 try {
+		        		 BizScript bizScript = BaseUtils.GSON.fromJson(new String(body, Constants.CHARSET), BizScript.class);
+		        		 
+			             final String bizType = bizScript.getBizType();
+			             if(!BaseUtils.isEmpty(bizType)) {
+			            	 if(bizScript.isDeleted()) {
+				            	 cache.put(bizType, deprecated_flag);  // put flag to avoid retry getByHttp
+				             } else if(!BaseUtils.isEmpty(bizScript.getScript())) {
+				            	 cache.put(bizType, bizScript.getScript());
+				 			}
+			             }
+		        	 } catch(Exception e) {
+		        		 logger.error("", e);
+		        	 }
 		         }
 
 				 @Override

@@ -99,7 +99,7 @@ public class EngineClient {
 		private final static int channelsPoolSize = Integer.valueOf(PropertyReader.getProperty("channelsPoolSize"));
 		
 		private final List<Channel> channelsPool = new ArrayList<>(initialChannelsPoolSize);
-		private int channelsCount;
+		private volatile int channelsCount;
 		private final Random random = new Random(System.currentTimeMillis());
 		private static Connection conn;  // static but initialized in constructor, to avoid unnecessarily
 		// initialziation except until that we really need MQ connection.
@@ -137,7 +137,7 @@ public class EngineClient {
 			if(channelsCount == 0 || conn == null) {
 				return;
 			}
-			if(pool.getQueue().size() > threadPoolSize && channelsCount != channelsPoolSize) {
+			if(channelsCount < channelsPoolSize && pool.getQueue().size() > threadPoolSize) {
 				// expand channelsPool
 				int i = 0;
 				synchronized(channelsPool) {
