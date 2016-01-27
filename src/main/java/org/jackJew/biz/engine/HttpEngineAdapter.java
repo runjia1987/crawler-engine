@@ -50,15 +50,15 @@ public class HttpEngineAdapter {
 	public final static String CONFIG_KEY_USER_AGENT = "User-Agent";
 	public static final String DEFAULT_USER_AGENT = PropertyReader.getProperty(CONFIG_KEY_USER_AGENT);	
 	public final static int DEFAULT_TIMEOUT = 30000;
+	public final static int LONG_TIMEOUT = 50000;
 	
 	public final static String CONFIG_KEY_PROXY_HOST = "proxyHost";
-	public final static String CONFIG_KEY_PROXY_PORT = "proxyPort";
-	
+	public final static String CONFIG_KEY_PROXY_PORT = "proxyPort";	
 	
 	public final static String CONFIG_HEADER_CHARSET = "charset";
 	public final static String CONFIG_BIZ_TYPE = "bizType";
 	
-	private final static String LONG_BIZ_TYPE = "long-biz-type";
+	private final static String LONG_BIZ_TYPE = "long";	
 	
 	/**
 	 * return singleton instance.
@@ -94,7 +94,7 @@ public class HttpEngineAdapter {
 		String bizType = hasNoConfig ? null : config.get(CONFIG_BIZ_TYPE);
 		int timeout = DEFAULT_TIMEOUT;
 		if (LONG_BIZ_TYPE.equals(bizType)) {
-			timeout = 50000;
+			timeout = LONG_TIMEOUT;
 		}
 		RequestConfig.Builder rcBuilder = RequestConfig.custom()
 				.setSocketTimeout(timeout)

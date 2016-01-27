@@ -78,7 +78,7 @@ public class BizScriptCacheService {
 
 				 @Override
 				 public void handleCancel(String consumerTag) throws IOException {
-				 	logger.error(EngineClient.CLIENT_NAME + " consumer on queue " + queue + " get canceled signal.");
+				 	logger.error(EngineClient.CLIENT_NAME + " consumer on queue " + queue + " get unexpected canceled signal.");
 				 }
 			};
 			

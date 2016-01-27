@@ -13,4 +13,4 @@ nohup ./mqbroker.exe > b.log &
 // subGroup, 同一个消息可以被不同的消费者群组消费，每个群组只能消费一次。
 // 这样如果只有一个消费者群组，那么达到queue的语义；如果有多个消费者群组，那么达到topic的语义。
 
-// MessageModel.CLUSTERING-default, 其中一个master做请求消费处理；BROADCASTING, 每个master都做消费请求处理。
+// MessageModel.CLUSTERING-default, 其中一个master做消费请求处理；BROADCASTING, 每个master都做消费请求处理。
