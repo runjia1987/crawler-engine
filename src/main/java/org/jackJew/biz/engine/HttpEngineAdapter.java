@@ -73,8 +73,8 @@ public class HttpEngineAdapter {
 	
 	private HttpEngineAdapter() {
 		connectionManager = new PoolingHttpClientConnectionManager();
-		connectionManager.setMaxTotal(150);
-		connectionManager.setDefaultMaxPerRoute(150);
+		connectionManager.setMaxTotal(200);
+		connectionManager.setDefaultMaxPerRoute(200);
 	}
 
 	private CloseableHttpClient createClient(Map<String, String> config) {

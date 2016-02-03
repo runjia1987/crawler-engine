@@ -57,7 +57,7 @@ public class EngineClient {
 		connectionFactory.setAutomaticRecoveryEnabled(true);
 		Connection conn = connectionFactory.newConnection();
 		Channel channel = conn.createChannel();
-		channel.basicQos(threadPoolSize * 2, true);
+		channel.basicQos(threadPoolSize, true);
 		
 		final Consumer consumer = new DefaultConsumer(channel) {
 			@Override
