@@ -32,18 +32,15 @@ import com.rabbitmq.client.MessageProperties;
 public class EngineClient {
 	
 	private final static Logger logger = LoggerFactory.getLogger(EngineClient.class);
-	
-	private final static int threadPoolSize = Integer.valueOf(PropertyReader.getProperty("threadPoolSize"));
-	public final static String mqFactoryUri = PropertyReader.getProperty("mqFactoryUri");
-	
-	private final static String queueName = PropertyReader.getProperty("queueName");
-	
 	public static String CLIENT_NAME;
 	
-	final static ConnectionFactory connectionFactory = new ConnectionFactory();
-	
+	private final static int threadPoolSize = Integer.valueOf(PropertyReader.getProperty("threadPoolSize"));
 	public static final ThreadPoolExecutor pool = new ThreadPoolExecutor(threadPoolSize, threadPoolSize,
 			0L, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
+	
+	public final static String mqFactoryUri = PropertyReader.getProperty("mqFactoryUri");	
+	private final static String queueName = PropertyReader.getProperty("queueName");	
+	final static ConnectionFactory connectionFactory = new ConnectionFactory();	
 
 	public static void main(String[] args) throws Exception {
 		if(args == null || args.length == 0) {
@@ -101,8 +98,8 @@ public class EngineClient {
 		private final List<Channel> channelsPool = new ArrayList<>(initialChannelsPoolSize);
 		private volatile int channelsCount;
 		private final Random random = new Random(System.currentTimeMillis());
-		private static Connection conn;  // static but initialized in constructor, to avoid unnecessarily
-		// initialziation except until that we really need MQ connection.
+		private static Connection conn;  // static but initialized in constructor, to avoid unnecessary
+		// initialziation until that we really need MQ connection.
 		
 		private final static MessagePushService instance = new MessagePushService();
 		
