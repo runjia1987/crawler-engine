@@ -98,13 +98,15 @@ public class EngineClient {
 		private final List<Channel> channelsPool = new ArrayList<>(initialChannelsPoolSize);
 		private volatile int channelsCount;
 		private final Random random = new Random(System.currentTimeMillis());
-		private static Connection conn;  // static but initialized in constructor, to avoid unnecessary
-		// initialziation until that we really need MQ connection.
+		private static Connection conn;		
 		
-		private final static MessagePushService instance = new MessagePushService();
+		static class computeIfAbsent {
+			// avoid unnecessary initialziation until that we really need MQ connection.
+			private final static MessagePushService instance = new MessagePushService();
+		}		
 		
 		public static MessagePushService getInstance() {
-			return instance;
+			return computeIfAbsent.instance;
 		}
 		
 		private MessagePushService() {
