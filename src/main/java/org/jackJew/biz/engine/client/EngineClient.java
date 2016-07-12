@@ -68,7 +68,7 @@ public class EngineClient {
 
 			 @Override
 			 public void handleCancel(String consumerTag) throws IOException {
-			 	logger.error(CLIENT_NAME + " consumer on queue " + queueName + " get canceled signal.");
+			 	logger.error(CLIENT_NAME + " consumer on queue " + queueName + " get cancel signal.");
 			 }
 	     };
 		channel.basicConsume(queueName, true, consumer);

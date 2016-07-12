@@ -59,7 +59,7 @@ public class BizScriptCacheService {
 				@Override
 		         public void handleDelivery(String consumerTag, Envelope envelope,
 		                 AMQP.BasicProperties properties, byte[] body)  throws IOException {
-		        	 logger.info("script_exchange msg received." );
+		        	 logger.info("script update-msg received." );
 		        	 try {
 		        		 BizScript bizScript = BaseUtils.GSON.fromJson(new String(body, Constants.CHARSET), BizScript.class);
 		        		 
@@ -78,7 +78,7 @@ public class BizScriptCacheService {
 
 				 @Override
 				 public void handleCancel(String consumerTag) throws IOException {
-				 	logger.error(EngineClient.CLIENT_NAME + " consumer on queue " + queue + " get unexpected canceled signal.");
+				 	logger.error(EngineClient.CLIENT_NAME + " consumer on queue " + queue + " get unexpected cancel signal.");
 				 }
 			};
 			
