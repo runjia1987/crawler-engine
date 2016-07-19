@@ -123,7 +123,7 @@ public class JsEngineRhino implements JsEngine {
 		}
 		Context context = globalContextFactory.enterContext();
 		try {
-			return context.evaluateString(scriptObject, script, "<cmd>", 0, null);
+			return context.evaluateString(scriptObject, script, null, 0, null);
 		} catch (Exception ex) {
 			throw ex;
 		} finally {

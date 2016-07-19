@@ -44,7 +44,7 @@ public class BizScriptCacheService {
 	private final static CloseableHttpClient httpclient = HttpClients.custom()
 				.setUserAgent(HttpEngineAdapter.DEFAULT_USER_AGENT).build();
 	
-	private final static String deprecated_flag = "deprecated";
+	private final static String DEPRECATED = "000";
 	
 	private final static BizScriptCacheService instance = new BizScriptCacheService();
 	
@@ -66,7 +66,7 @@ public class BizScriptCacheService {
 			             final String bizType = bizScript.getBizType();
 			             if(!BaseUtils.isEmpty(bizType)) {
 			            	 if(bizScript.isDeleted()) {
-				            	 cache.put(bizType, deprecated_flag);  // put flag to avoid retry getByHttp
+				            	 cache.put(bizType, DEPRECATED);  // put flag to avoid retry getByHttp
 				             } else if(!BaseUtils.isEmpty(bizScript.getScript())) {
 				            	 cache.put(bizType, bizScript.getScript());
 				 			}
@@ -94,7 +94,7 @@ public class BizScriptCacheService {
 	
 	public String getScript(String bizType) {
 		String script = cache.get(bizType);
-		if(deprecated_flag.equals(script)) {
+		if(DEPRECATED.equals(script)) {
 			return null;  // the bizType is deprecated.
 		}
 		if(BaseUtils.isEmpty(script)) {
