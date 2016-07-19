@@ -19,6 +19,9 @@ import com.google.gson.JsonObject;
  */
 public class GlobalVarsVisibilityTest {
 	
+	/**
+	 * test in ES5 "use strict" mode, which will raise an error for non-var prefixed grammar
+	 */
 	@Test
 	public void test() throws Exception {
 		String scriptFile = "scripts/publicVars.js";
@@ -31,14 +34,15 @@ public class GlobalVarsVisibilityTest {
 		try {
 			String result = jsEngine.runScript2JSON(
 					String.format("(function(args){%s})(%s);", script, config.toString()));
-			System.out.println(result);  // null		
-			// thanks to ES5 "use strict"; we will raise an error for non-var defined grammar
-			
+			System.out.println(result);  // null
 		} catch (Exception ex) {
 			System.out.println("catch exception. " + BaseUtils.getSimpleExMsg(ex));
 		}
 	}
 	
+	/**
+	 * test in normal mode
+	 */
 	@Test
 	public void testWithClosure() throws Exception {
 		String scriptFile = "scripts/publicVarsInClosure.js";

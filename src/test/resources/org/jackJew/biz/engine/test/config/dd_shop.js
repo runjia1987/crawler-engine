@@ -1,6 +1,6 @@
 "use strict";
 
-var rs = { rs:[], status:[] };
+	var rs = { rs:[], status:[] };
 	var url = args.url;
 	args.charset = "GB2312";
 	args.headers = {};

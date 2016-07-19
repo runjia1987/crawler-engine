@@ -59,13 +59,13 @@ public class JsEngineNashorn implements JsEngine {
 			CompiledScript compiledScript = scriptEngine.compile(
 					IOUtils.toString(inputStream, DEFAULT_CHARSET));
 			compiledScript.eval(scriptContext);
-			inputStream.close();
+			IOUtils.closeQuietly(inputStream);
 			
 			inputStream = cl.getResourceAsStream(config_package + "core.js");
 			compiledScript = scriptEngine.compile(
 					IOUtils.toString(inputStream, DEFAULT_CHARSET));
 			compiledScript.eval(scriptContext);
-			inputStream.close();
+			IOUtils.closeQuietly(inputStream);
 			
 		} catch (Exception e) {
 			logger.error("", e);
