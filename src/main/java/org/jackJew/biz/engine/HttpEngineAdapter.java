@@ -3,6 +3,7 @@ package org.jackJew.biz.engine;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -58,7 +59,7 @@ public class HttpEngineAdapter {
 	public final static String CONFIG_HEADER_CHARSET = "charset";
 	public final static String CONFIG_BIZ_TYPE = "bizType";
 	
-	private final static String LONG_BIZ_TYPE = "long";	
+	private final static String LONG_TIME_BIZ_TYPES = PropertyReader.getProperty("Long-Time-BizTypes");	
 	
 	/**
 	 * return singleton instance.
@@ -93,9 +94,12 @@ public class HttpEngineAdapter {
 		
 		String bizType = hasNoConfig ? null : config.get(CONFIG_BIZ_TYPE);
 		int timeout = DEFAULT_TIMEOUT;
-		if (LONG_BIZ_TYPE.equals(bizType)) {
-			timeout = LONG_TIMEOUT;
-		}
+		if(!BaseUtils.isEmpty(LONG_TIME_BIZ_TYPES)) {
+			List<String> long_time_bizType_list = Arrays.asList(LONG_TIME_BIZ_TYPES.split(","));
+			if (!BaseUtils.isEmpty(bizType) && long_time_bizType_list.contains(bizType)) {
+				timeout = LONG_TIMEOUT;
+			}
+		}		
 		RequestConfig.Builder rcBuilder = RequestConfig.custom()
 				.setSocketTimeout(timeout)
 				.setConnectionRequestTimeout(timeout)

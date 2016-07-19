@@ -71,7 +71,6 @@ public class JsEngineRhino implements JsEngine {
 		}
 
 		globalContextFactory = new ContextFactory() {
-			@SuppressWarnings("deprecation")
 			@Override
 			protected Context makeContext() {
 				Context context = new Context();
@@ -96,8 +95,7 @@ public class JsEngineRhino implements JsEngine {
 	}
 
 	private JsEngineRhino() {
-		Context context = globalContextFactory.enterContext();
-		sharedScriptObject = context.initStandardObjects();
+		sharedScriptObject = globalContextFactory.enterContext().initStandardObjects();
 		try {	
 			ScriptableObject.putConstProperty(sharedScriptObject, "$$http", HttpEngineAdapter.getInstance());
 			ScriptableObject.putConstProperty(sharedScriptObject, "$$system", SystemUtil.getInstance());

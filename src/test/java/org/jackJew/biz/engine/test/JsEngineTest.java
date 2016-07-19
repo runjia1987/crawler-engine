@@ -26,13 +26,6 @@ public class JsEngineTest {
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
 		try (InputStream ins = cl.getResourceAsStream("site_source.html");) {
 			String content = IOUtils.toString(ins);
-			/*Document document = Jsoup.parse(content);
-			Elements elements = document.select("a[href]");
-			for(Element element : elements) {
-				String url = element.attr("href").toString();
-				if(url.startsWith("http://shop.dangdang.com/"))
-					System.out.println(url.replaceAll("\n|\r|\t", ""));
-			}*/
 			JsonObject config = new JsonObject();
 			config.addProperty("content", content);
 			
