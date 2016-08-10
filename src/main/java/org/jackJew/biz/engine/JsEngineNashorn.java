@@ -112,9 +112,9 @@ public class JsEngineNashorn implements JsEngine {
 			if(value instanceof ScriptObjectMirror) {
 				ScriptObjectMirror field = (ScriptObjectMirror)value;
 				if(field.isArray()) {
-					objectMirror.put(key, field.values());  // return Array for GSON
+					objectMirror.put(key, field.values());  // return Array for Map k-v
 				}
-				transform(field); // we assume that the depth of recursion is good
+				transform(field); // we assume that the depth of recursion is tolerable
 			}
 		}
 	}
