@@ -59,7 +59,8 @@ public class HttpEngineAdapter {
 	public final static String CONFIG_HEADER_CHARSET = "charset";
 	public final static String CONFIG_BIZ_TYPE = "bizType";
 	
-	private final static String LONG_TIME_BIZ_TYPES = PropertyReader.getProperty("Long-Time-BizTypes");	
+	private final List<String> LONG_TIME_BIZ_TYPES = new ArrayList<String>();
+	
 	
 	/**
 	 * return singleton instance.
@@ -74,8 +75,13 @@ public class HttpEngineAdapter {
 	
 	private HttpEngineAdapter() {
 		connectionManager = new PoolingHttpClientConnectionManager();
-		connectionManager.setMaxTotal(200);
-		connectionManager.setDefaultMaxPerRoute(200);
+		connectionManager.setMaxTotal(500);
+		connectionManager.setDefaultMaxPerRoute(500);
+		
+		String value = PropertyReader.getProperty("Long-Time-BizTypes");
+		if(!BaseUtils.isEmpty(value)) {
+			LONG_TIME_BIZ_TYPES.addAll(Arrays.asList(value.split(",")));
+		}
 	}
 
 	private CloseableHttpClient createClient(Map<String, String> config) {
@@ -94,17 +100,13 @@ public class HttpEngineAdapter {
 		
 		String bizType = hasNoConfig ? null : config.get(CONFIG_BIZ_TYPE);
 		int timeout = DEFAULT_TIMEOUT;
-		if(!BaseUtils.isEmpty(LONG_TIME_BIZ_TYPES)) {
-			List<String> long_time_bizType_list = Arrays.asList(LONG_TIME_BIZ_TYPES.split(","));
-			if (!BaseUtils.isEmpty(bizType) && long_time_bizType_list.contains(bizType)) {
-				timeout = LONG_TIMEOUT;
-			}
+		if(!BaseUtils.isEmpty(bizType) && LONG_TIME_BIZ_TYPES.contains(bizType)) {
+			timeout = LONG_TIMEOUT;
 		}		
 		RequestConfig.Builder rcBuilder = RequestConfig.custom()
 				.setSocketTimeout(timeout)
 				.setConnectionRequestTimeout(timeout)
-				.setConnectTimeout(timeout)
-				.setCookieSpec(CookieSpecs.DEFAULT);		
+				.setConnectTimeout(timeout);		
 		RequestConfig requestConfig = rcBuilder.build();
 
 		String proxyHost = null, proxyPort = null;
