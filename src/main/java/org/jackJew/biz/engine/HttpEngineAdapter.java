@@ -84,36 +84,27 @@ public class HttpEngineAdapter {
 	}
 
 	private CloseableHttpClient createClient(Map<String, String> config) {
-		boolean hasNoConfig = BaseUtils.isNullOrEmpty(config);
-		if(hasNoConfig) {
+		if(config == null) {
 			config = new HashMap<>();
-		}
-		String userAgent = DEFAULT_USER_AGENT;
-		if(!hasNoConfig){
-			userAgent = config.get(CONFIG_KEY_USER_AGENT);
-			if(BaseUtils.isEmpty(userAgent)) {
-				userAgent = DEFAULT_USER_AGENT;
-			}
-		}
-		config.put(CONFIG_KEY_USER_AGENT, userAgent);
+		}		
 		
-		String bizType = hasNoConfig ? null : config.get(CONFIG_BIZ_TYPE);
+		String bizType = config.remove(CONFIG_BIZ_TYPE);;
 		int timeout = DEFAULT_TIMEOUT;
 		if(!BaseUtils.isEmpty(bizType) && LONG_TIME_BIZ_TYPES.contains(bizType)) {
 			timeout = LONG_TIMEOUT;
-		}		
-		RequestConfig.Builder rcBuilder = RequestConfig.custom()
+		}	
+		RequestConfig requestConfig = RequestConfig.custom()
 				.setSocketTimeout(timeout)
 				.setConnectionRequestTimeout(timeout)
-				.setConnectTimeout(timeout);		
-		RequestConfig requestConfig = rcBuilder.build();
+				.setConnectTimeout(timeout).build();
 
-		String proxyHost = null, proxyPort = null;
-		if(!hasNoConfig) {
-			proxyHost = config.remove(CONFIG_KEY_PROXY_HOST);
-			proxyPort = config.remove(CONFIG_KEY_PROXY_PORT);
-			config.remove(CONFIG_BIZ_TYPE);
+		String proxyHost = config.remove(CONFIG_KEY_PROXY_HOST), proxyPort = config.remove(CONFIG_KEY_PROXY_PORT);		
+		String userAgent = config.get(CONFIG_KEY_USER_AGENT);
+		if(BaseUtils.isEmpty(userAgent)) {
+			userAgent = DEFAULT_USER_AGENT;
 		}
+		config.put(CONFIG_KEY_USER_AGENT, userAgent);
+		
 		HttpClientBuilder builder = HttpClients.custom()
 				.setConnectionManager(connectionManager)
 				.setConnectionManagerShared(true)

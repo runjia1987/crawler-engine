@@ -53,6 +53,7 @@ public class JsEngineNashorn implements JsEngine {
 		scriptContext = new SimpleScriptContext();
 		scriptContext.setBindings(bindings, ScriptContext.GLOBAL_SCOPE);
 		scriptEngine.setContext(scriptContext);
+		
 		final ClassLoader cl = Thread.currentThread().getContextClassLoader();
 		try {
 			InputStream inputStream = cl.getResourceAsStream(config_package + "json_util.js");
