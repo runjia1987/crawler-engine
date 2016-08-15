@@ -46,7 +46,7 @@ var http = {
     }    
 }
 
-function setProxy(args, proxyHost, proxyPort){
+var setProxy = function(args, proxyHost, proxyPort) {
 	args.proxyHost = proxyHost;
 	args.proxyPort = proxyPort;
 }

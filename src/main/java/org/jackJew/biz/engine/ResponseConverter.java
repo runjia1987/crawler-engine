@@ -21,10 +21,10 @@ public class ResponseConverter {
 	
 	private final static Logger logger = LoggerFactory.getLogger(ResponseConverter.class);
 
-	private String charset;
-	private int statusCode;
-	private Map<String, String> headers;
-	private byte[] bytes;
+	String charset;
+	int statusCode;
+	Map<String, String> headers;
+	byte[] bytes;
 
 	private String detectAndResolve(InputStream ins) {
 		try {
@@ -113,19 +113,11 @@ public class ResponseConverter {
 		this.bytes = bytes;
 	}
 
-	Map<String, String> getHeaders() {
-		return headers;
-	}
-
 	void setHeaders(Map<String, String> headers) {
 		this.headers = headers;
 	}
 
 	void setStatusCode(int statusCode) {
 		this.statusCode = statusCode;
-	}
-
-	int getStatusCode() {
-		return statusCode;
 	}
 }
