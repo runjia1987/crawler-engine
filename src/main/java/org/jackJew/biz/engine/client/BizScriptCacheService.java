@@ -1,6 +1,7 @@
 package org.jackJew.biz.engine.client;
 
 import java.io.IOException;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -53,8 +54,8 @@ public class BizScriptCacheService {
 			BizScriptConnectionHolder.conn = EngineClient.connectionFactory.newConnection();
 			Channel channel = BizScriptConnectionHolder.conn.createChannel();
 			channel.exchangeDeclarePassive(script_exchange);
-			// topic sub
-			String queue = channel.queueDeclare().getQueue();
+			// topic consmue
+			String queue = channel.queueDeclare(UUID.randomUUID().toString(), true, false, true, null).getQueue();
 			Consumer consumer = new DefaultConsumer(channel) {
 				@Override
 		         public void handleDelivery(String consumerTag, Envelope envelope,
