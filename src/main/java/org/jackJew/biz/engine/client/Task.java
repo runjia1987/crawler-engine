@@ -71,7 +71,7 @@ public class Task implements Runnable {
 			
 			// send reply
 			Reply reply = new Reply(taskObject.getTaskId(), taskObject.getBizType(), result);
-			MessagePushService.getInstance().publish(reply);
+			MessagePushService.getInstance().submit(reply);
 			
 		} catch (Exception e) {
 			logger.error(EngineClient.CLIENT_NAME, e);

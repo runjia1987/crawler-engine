@@ -55,7 +55,7 @@ public class BizScriptCacheService {
 			Channel channel = BizScriptConnectionHolder.conn.createChannel();
 			channel.exchangeDeclarePassive(script_exchange);
 			// topic consmue
-			String queue = channel.queueDeclare(UUID.randomUUID().toString(), true, false, true, null).getQueue();
+			String queue = channel.queueDeclare(UUID.randomUUID().toString(), true, true, true, null).getQueue();
 			Consumer consumer = new DefaultConsumer(channel) {
 				@Override
 		         public void handleDelivery(String consumerTag, Envelope envelope,

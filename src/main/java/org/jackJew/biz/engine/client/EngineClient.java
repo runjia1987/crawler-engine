@@ -1,9 +1,6 @@
 package org.jackJew.biz.engine.client;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -52,6 +49,9 @@ public class EngineClient {
 		
 		connectionFactory.setUri(mqFactoryUri);
 		connectionFactory.setAutomaticRecoveryEnabled(true);
+		connectionFactory.setTopologyRecoveryEnabled(true);
+		// since amqp-client v4.0, default is true. now is v3.6. setTopologyRecoveryEnabled enables exchanges/queue/bindings/consumers auto recovery
+		
 		Connection conn = connectionFactory.newConnection();
 		Channel channel = conn.createChannel();
 		channel.basicQos(threadPoolSize, true);
@@ -91,14 +91,8 @@ public class EngineClient {
 		
 		private final static String exchangeName = PropertyReader.getProperty("exchangeName");
 		private final static String queueNameReply = PropertyReader.getProperty("queueNameReply");
-		
-		private final static int initialChannelsPoolSize = Integer.valueOf(PropertyReader.getProperty("initialChannelsPoolSize"));
-		private final static int channelsPoolSize = Integer.valueOf(PropertyReader.getProperty("channelsPoolSize"));
-		
-		private final List<Channel> channelsPool = new ArrayList<>(initialChannelsPoolSize);
-		private volatile int channelsCount;
-		private final Random random = new Random(System.currentTimeMillis());
-		private static Connection conn;		
+		private static Connection conn;
+		private final LinkedBlockingQueue<Reply> replyQueue = new LinkedBlockingQueue<>();
 		
 		static class MessagePushServiceHolder {
 			// avoid unnecessary initialziation until that we really need MQ connection.
@@ -112,52 +106,33 @@ public class EngineClient {
 		private MessagePushService() {
 			try {
 				conn = connectionFactory.newConnection();
+				Channel channel = conn.createChannel();
+				Thread publishThread = new Thread(() -> {
+					while(true) {
+						try {
+							Reply reply = replyQueue.take();
+							if(reply == null) {
+								Thread.sleep(2000);							
+							} else {
+								channel.basicPublish(exchangeName, queueNameReply, MessageProperties.BASIC,
+										BaseUtils.GSON.toJson(reply).getBytes(Constants.CHARSET));
+							}
+						} catch(Exception e) {
+						}						
+					}
+				}, "publishThread");
+				publishThread.setDaemon(true);
+				publishThread.start();
 			} catch (Exception e) {
 				logger.error(CLIENT_NAME, BaseUtils.getSimpleExMsg(e));
-			}
-			if(conn != null) {
-				int i = 0;
-				while(i++ < initialChannelsPoolSize) {
-					try {
-						Channel channel = conn.createChannel();
-						channelsPool.add(channel);
-					} catch(Exception e) {
-						logger.error(CLIENT_NAME, BaseUtils.getSimpleExMsg(e));
-					}
-				}
-				channelsCount = channelsPool.size();
 			}
 		}
 		
 		/**
-		 * publish reply message
+		 * submit reply message
 		 */
-		public void publish(Reply reply) {
-			if(channelsCount == 0 || conn == null) {
-				return;
-			}
-			if(channelsCount < channelsPoolSize && pool.getQueue().size() > threadPoolSize) {
-				// expand channelsPool
-				int i = 0;
-				synchronized(channelsPool) {
-					while(i++ < channelsPoolSize - channelsCount) {
-						try {
-							Channel channel = conn.createChannel();
-							channelsPool.add(channel);
-						} catch(Exception e) {
-							logger.error(CLIENT_NAME, BaseUtils.getSimpleExMsg(e));
-						}
-					}
-					channelsCount = channelsPool.size();
-				}
-			}
-			int randomPos = random.nextInt(channelsCount);
-			try {
-				channelsPool.get(randomPos).basicPublish(exchangeName, queueNameReply, MessageProperties.BASIC,
-						BaseUtils.GSON.toJson(reply).getBytes(Constants.CHARSET));
-			} catch (Exception e) {
-				logger.error(CLIENT_NAME, BaseUtils.getSimpleExMsg(e));
-			}
+		public void submit(Reply reply) {
+			replyQueue.offer(reply);
 		}		
 	}
 	
