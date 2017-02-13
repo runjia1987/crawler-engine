@@ -22,7 +22,7 @@ import com.google.gson.JsonObject;
  * @author Jack
  *
  */
-public class Task implements Runnable {
+public class Task {
 	
 	private final static Logger logger = LoggerFactory.getLogger(Task.class);	
 	
@@ -45,8 +45,7 @@ public class Task implements Runnable {
 		this.body = body;
 	}
 
-	@Override
-	public void run() {
+	public void process() {
 		try {
 			TaskObject taskObject = BaseUtils.GSON.fromJson(
 						new String(body, Constants.CHARSET), TaskObject.class);			

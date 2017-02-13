@@ -52,15 +52,15 @@ public class EngineClient {
 		connectionFactory.setTopologyRecoveryEnabled(true);
 		// since amqp-client v4.0, default is true. now is v3.6. setTopologyRecoveryEnabled enables exchanges/queue/bindings/consumers auto recovery
 		
-		Connection conn = connectionFactory.newConnection();
+		Connection conn = connectionFactory.newConnection(pool);
 		Channel channel = conn.createChannel();
-		channel.basicQos(threadPoolSize, true);
+		channel.basicQos(threadPoolSize, false);
 		
 		final Consumer consumer = new DefaultConsumer(channel) {
 			@Override
 	         public void handleDelivery(String consumerTag, Envelope envelope,
 	                 AMQP.BasicProperties properties, byte[] body)  throws IOException {
-	             pool.submit(new Task(body));
+	             new Task(body).process();
 	         }
 
 			 @Override
@@ -133,7 +133,7 @@ public class EngineClient {
 		 */
 		public void submit(Reply reply) {
 			replyQueue.offer(reply);
-		}		
+		}
 	}
 	
 	static class BizScriptConnectionHolder {
