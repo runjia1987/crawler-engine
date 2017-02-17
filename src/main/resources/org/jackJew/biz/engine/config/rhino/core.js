@@ -11,6 +11,11 @@ var vEx = org.jackJew.biz.engine.util.ValidationException
 var hashmap = java.util.HashMap
 var jsoup = org.jsoup.Jsoup
 
+var setProxy = function(args, proxyHost, proxyPort) {
+	args.proxyHost = proxyHost;
+	args.proxyPort = proxyPort;
+};
+
 var http = {
 	get: function(url, config) {
 	    return this.request(url, config).getText();
