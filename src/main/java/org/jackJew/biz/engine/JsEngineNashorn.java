@@ -13,8 +13,9 @@ import javax.script.SimpleScriptContext;
 import jdk.nashorn.api.scripting.NashornScriptEngine;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 
-import org.apache.commons.io.IOUtils;
 import org.jackJew.biz.engine.util.BaseUtils;
+import org.jackJew.biz.engine.util.GsonUtils;
+import org.jackJew.biz.engine.util.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -94,7 +95,7 @@ public class JsEngineNashorn implements JsEngine {
 				ScriptObjectMirror objectMirror = (ScriptObjectMirror)result;
 				transform(objectMirror);
 				
-				return BaseUtils.GSON.toJson(result);
+				return GsonUtils.toJson(result);
 			} else {
 				Object jsonObject = scriptEngine.invokeFunction("$$stringify", result);
 				return jsonObject.toString();

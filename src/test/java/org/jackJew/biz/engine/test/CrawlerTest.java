@@ -2,9 +2,9 @@ package org.jackJew.biz.engine.test;
 
 import java.io.InputStream;
 
-import org.apache.commons.io.IOUtils;
 import org.jackJew.biz.engine.JsEngine;
 import org.jackJew.biz.engine.JsEngineRhino;
+import org.jackJew.biz.engine.util.IOUtils;
 import org.junit.Test;
 
 import com.google.gson.JsonObject;

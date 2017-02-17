@@ -9,12 +9,12 @@ public class HttpEngineAdapterTest {
 
 	@Test
 	public void testGet() throws Exception {
-		String url = "http://item.jd.com/1603975392.html";
+		String url = "https://item.jd.com/1595652727.html";
 		HttpEngineAdapter httpEngineAdapter = HttpEngineAdapter.getInstance();
 		String content = httpEngineAdapter.get(url, null, null).getText();
 		
 		Document document = Jsoup.parse(content);
-		String text = document.select("div#itemInfo div#name h1").get(0).html();
+		String text = document.select("div.itemInfo-wrap div.sku-name").get(0).text();
 		System.out.println(text);
 	}
 

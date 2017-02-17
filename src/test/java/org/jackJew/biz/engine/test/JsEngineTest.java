@@ -2,10 +2,10 @@ package org.jackJew.biz.engine.test;
 
 import java.io.InputStream;
 
-import org.apache.commons.io.IOUtils;
 import org.jackJew.biz.engine.JsEngine;
 import org.jackJew.biz.engine.JsEngineNashorn;
 import org.jackJew.biz.engine.JsEngineRhino;
+import org.jackJew.biz.engine.util.IOUtils;
 import org.junit.Test;
 
 import com.google.gson.JsonObject;
@@ -25,13 +25,13 @@ public class JsEngineTest {
 	public void testNashornJS() {
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
 		try (InputStream ins = cl.getResourceAsStream("site_source.html");) {
-			String content = IOUtils.toString(ins);
+			String content = IOUtils.toString(ins, "UTF-8");
 			JsonObject config = new JsonObject();
 			config.addProperty("content", content);
 			
 			JsEngine jsEngine = JsEngineNashorn.getInstance();
 			InputStream inputStream = cl.getResourceAsStream("org/jackJew/biz/engine/test/config/test.js");			
-			String script = IOUtils.toString(inputStream);
+			String script = IOUtils.toString(inputStream, "UTF-8");
 			IOUtils.closeQuietly(inputStream);
 			
 			long startTime = System.currentTimeMillis();
@@ -54,14 +54,14 @@ public class JsEngineTest {
 	public void testRhinoJS() {
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
 		try (InputStream ins = cl.getResourceAsStream("site_source.html");) {
-			String content = IOUtils.toString(ins);
+			String content = IOUtils.toString(ins, "UTF-8");
 			
 			JsonObject config = new JsonObject();
 			config.addProperty("content", content);
 			
 			JsEngine jsEngine = JsEngineRhino.getInstance();
 			InputStream inputStream = cl.getResourceAsStream("org/jackJew/biz/engine/test/config/test.js");			
-			String script = IOUtils.toString(inputStream);
+			String script = IOUtils.toString(inputStream, "UTF-8");
 			IOUtils.closeQuietly(inputStream);
 			
 			long startTime = System.currentTimeMillis();

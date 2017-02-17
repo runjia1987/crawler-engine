@@ -23,8 +23,6 @@ public class BaseUtils {
 	
 	private static final Logger logger = LoggerFactory.getLogger(BaseUtils.class);
 	
-	public static final Gson GSON = new GsonBuilder().disableHtmlEscaping().create();
-	
 	public static final DateTimeFormatter full_Formatter =
 			DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
 			.withLocale(Locale.getDefault())

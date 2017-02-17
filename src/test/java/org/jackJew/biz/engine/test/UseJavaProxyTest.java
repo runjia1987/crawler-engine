@@ -2,10 +2,10 @@ package org.jackJew.biz.engine.test;
 
 import java.io.InputStream;
 
-import org.apache.commons.io.IOUtils;
 import org.jackJew.biz.engine.JsEngine;
 import org.jackJew.biz.engine.JsEngineRhino;
 import org.jackJew.biz.engine.util.BaseUtils;
+import org.jackJew.biz.engine.util.IOUtils;
 import org.junit.Test;
 
 import com.google.gson.JsonObject;
@@ -22,7 +22,7 @@ public class UseJavaProxyTest {
 	public void testUse() throws Exception {
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
 		InputStream inputStream = cl.getResourceAsStream("scripts/useProxy.js");
-		String script = IOUtils.toString(inputStream);
+		String script = IOUtils.toString(inputStream, "UTF-8");
 		IOUtils.closeQuietly(inputStream);
 		
 		System.out.println("Executing...");

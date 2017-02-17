@@ -13,6 +13,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.jackJew.biz.engine.HttpEngineAdapter;
 import org.jackJew.biz.engine.client.EngineClient.BizScriptConnectionHolder;
 import org.jackJew.biz.engine.util.BaseUtils;
+import org.jackJew.biz.engine.util.GsonUtils;
 import org.jackJew.biz.engine.util.PropertyReader;
 import org.jackJew.biz.task.BizScript;
 import org.jackJew.biz.task.Constants;
@@ -62,7 +63,7 @@ public class BizScriptCacheService {
 		                 AMQP.BasicProperties properties, byte[] body)  throws IOException {
 		        	 logger.info("script update-msg received." );
 		        	 try {
-		        		 BizScript bizScript = BaseUtils.GSON.fromJson(new String(body, Constants.CHARSET), BizScript.class);
+		        		 BizScript bizScript = GsonUtils.fromJson(new String(body, Constants.CHARSET), BizScript.class);
 		        		 
 			             final String bizType = bizScript.getBizType();
 			             if(!BaseUtils.isEmpty(bizType)) {

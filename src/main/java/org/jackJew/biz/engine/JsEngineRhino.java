@@ -6,8 +6,9 @@ import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.commons.io.IOUtils;
 import org.jackJew.biz.engine.util.BaseUtils;
+import org.jackJew.biz.engine.util.GsonUtils;
+import org.jackJew.biz.engine.util.IOUtils;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.ContextFactory;
 import org.mozilla.javascript.Scriptable;
@@ -135,7 +136,7 @@ public class JsEngineRhino implements JsEngine {
 	public String runScript2JSON(String script) throws Exception {
 		try {
 			Object rawResult = runScript(script);
-			return BaseUtils.GSON.toJson(rawResult);
+			return GsonUtils.toJson(rawResult);
 		} catch (Exception ex) {
 			throw ex;
 		}
