@@ -74,8 +74,8 @@ public class HttpEngineAdapter {
 	
 	private HttpEngineAdapter() {
 		connectionManager = new PoolingHttpClientConnectionManager();
-		connectionManager.setMaxTotal(500);
-		connectionManager.setDefaultMaxPerRoute(500);
+		connectionManager.setMaxTotal(200);
+		connectionManager.setDefaultMaxPerRoute(200);
 		
 		String value = PropertyReader.getProperty("Long-Time-BizTypes");
 		if(!BaseUtils.isEmpty(value)) {
