@@ -6,6 +6,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import org.jackJew.biz.engine.util.BaseUtils;
+import org.jackJew.biz.engine.util.GsonUtils;
 import org.jackJew.biz.engine.util.PropertyReader;
 import org.jackJew.biz.task.Constants;
 import org.jackJew.biz.task.Reply;
@@ -115,7 +116,7 @@ public class EngineClient {
 								Thread.sleep(2000);							
 							} else {
 								channel.basicPublish(exchangeName, queueNameReply, MessageProperties.BASIC,
-										BaseUtils.GSON.toJson(reply).getBytes(Constants.CHARSET));
+										GsonUtils.toJson(reply).getBytes(Constants.CHARSET));
 							}
 						} catch(Exception e) {
 						}						

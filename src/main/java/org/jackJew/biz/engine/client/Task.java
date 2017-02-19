@@ -8,6 +8,7 @@ import org.jackJew.biz.engine.JsEngineNashorn;
 import org.jackJew.biz.engine.JsEngineRhino;
 import org.jackJew.biz.engine.client.EngineClient.MessagePushService;
 import org.jackJew.biz.engine.util.BaseUtils;
+import org.jackJew.biz.engine.util.GsonUtils;
 import org.jackJew.biz.engine.util.PropertyReader;
 import org.jackJew.biz.task.Constants;
 import org.jackJew.biz.task.Reply;
@@ -47,12 +48,14 @@ public class Task {
 
 	public void process() {
 		try {
-			TaskObject taskObject = BaseUtils.GSON.fromJson(
-						new String(body, Constants.CHARSET), TaskObject.class);			
+			TaskObject taskObject = GsonUtils.fromJson(new String(body, Constants.CHARSET), TaskObject.class);			
 			String script = BizScriptCacheService.getInstance().getScript(taskObject.getBizType());
 			if(BaseUtils.isEmpty(script)) {
+				logger.warn(EngineClient.CLIENT_NAME + " - fail to find script for " + taskObject.getBizType());
 				return;
 			}
+			logger.info(EngineClient.CLIENT_NAME + " - start to process taskId " + taskObject.getTaskId());
+			
 			Map<String, String> args = taskObject.getArgs();
 			JsonObject argsObject = new JsonObject();
 			argsObject.addProperty(HttpEngineAdapter.CONFIG_BIZ_TYPE, taskObject.getBizType());
@@ -66,7 +69,7 @@ public class Task {
 			scriptsBuffer.append(script).append("})(").append(argsObject.toString()).append(")");
 			
 			String result = JS_ENGINE.runScript2JSON(scriptsBuffer.toString());
-			logger.info(EngineClient.CLIENT_NAME + " - " + taskObject.getTaskId());
+			logger.info(EngineClient.CLIENT_NAME + " - received result for taskId " + taskObject.getTaskId());
 			
 			// send reply
 			Reply reply = new Reply(taskObject.getTaskId(), taskObject.getBizType(), result);

@@ -2,11 +2,11 @@ package org.jackJew.biz.engine.test;
 
 import java.io.InputStream;
 
-import org.apache.commons.io.IOUtils;
 import org.jackJew.biz.engine.JsEngine;
 import org.jackJew.biz.engine.JsEngineNashorn;
 import org.jackJew.biz.engine.JsEngineRhino;
 import org.jackJew.biz.engine.util.BaseUtils;
+import org.jackJew.biz.engine.util.IOUtils;
 import org.jackJew.biz.task.Constants;
 import org.junit.Test;
 
