@@ -57,6 +57,7 @@ public class BizScriptCacheService {
 			channel.exchangeDeclarePassive(script_exchange);
 			// topic consmue
 			String queue = channel.queueDeclare(UUID.randomUUID().toString(), true, true, true, null).getQueue();
+			channel.queueBind(queue, script_exchange, null);
 			Consumer consumer = new DefaultConsumer(channel) {
 				@Override
 		         public void handleDelivery(String consumerTag, Envelope envelope,
