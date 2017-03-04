@@ -72,7 +72,7 @@ public class JsEngineRhino implements JsEngine {
 		}
 
 		globalContextFactory = new ContextFactory() {
-			@Override
+			@SuppressWarnings("deprecation")
 			protected Context makeContext() {
 				Context context = new Context();
 				context.setClassShutter((className) -> {

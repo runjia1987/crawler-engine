@@ -13,7 +13,6 @@ import javax.script.SimpleScriptContext;
 import jdk.nashorn.api.scripting.NashornScriptEngine;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 
-import org.jackJew.biz.engine.util.BaseUtils;
 import org.jackJew.biz.engine.util.GsonUtils;
 import org.jackJew.biz.engine.util.IOUtils;
 import org.slf4j.Logger;

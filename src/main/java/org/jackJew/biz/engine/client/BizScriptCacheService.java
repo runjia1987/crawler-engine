@@ -101,7 +101,8 @@ public class BizScriptCacheService {
 			return null;  // the bizType is deprecated.
 		}
 		if(BaseUtils.isEmpty(script)) {
-			script = getByHttp(bizType);
+			logger.info("start getByHttp of bizType: " + bizType);
+			script = getByHttp(bizType);			
 			if(!BaseUtils.isEmpty(script)) {
 				cache.put(bizType, script);
 			}
@@ -114,7 +115,7 @@ public class BizScriptCacheService {
 	 */
 	private String getByHttp(String bizType) {
 		if(!BaseUtils.isEmpty(bizType)) {
-			HttpGet get = new HttpGet(BIZ_SCRIPT_URL + bizType);
+			HttpGet get = new HttpGet(String.format(BIZ_SCRIPT_URL, bizType, System.currentTimeMillis()));
 			try (CloseableHttpResponse response = httpclient.execute(get);){
 				if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 					byte[] bytes = BaseUtils.getBytes(response, 1 << 8);
