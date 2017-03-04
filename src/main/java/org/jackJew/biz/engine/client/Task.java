@@ -1,5 +1,6 @@
 package org.jackJew.biz.engine.client;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.jackJew.biz.engine.HttpEngineAdapter;
@@ -57,19 +58,17 @@ public class Task {
 			logger.info(EngineClient.CLIENT_NAME + " - start to process taskId " + taskObject.getTaskId());
 			
 			Map<String, String> args = taskObject.getArgs();
-			JsonObject argsObject = new JsonObject();
-			argsObject.addProperty(HttpEngineAdapter.CONFIG_BIZ_TYPE, taskObject.getBizType());
-			if(!BaseUtils.isNullOrEmpty(args)) {
-				for(Map.Entry<String, String> entry : args.entrySet()) {
-					argsObject.addProperty(entry.getKey(), entry.getValue());
-				}
+			if(args == null) {
+				args = new HashMap<>();
 			}
+			args.put(HttpEngineAdapter.CONFIG_BIZ_TYPE, taskObject.getBizType());
 			// wrap script in closure
 			StringBuilder scriptsBuffer = new StringBuilder("(function(args){");
-			scriptsBuffer.append(script).append("})(").append(argsObject.toString()).append(")");
+			scriptsBuffer.append(script).append("})(").append(GsonUtils.toJson(args)).append(")");
 			
 			String result = JS_ENGINE.runScript2JSON(scriptsBuffer.toString());
-			logger.info(EngineClient.CLIENT_NAME + " - received result for taskId " + taskObject.getTaskId());
+			logger.info(EngineClient.CLIENT_NAME + " - received result length(" + (result == null ? 0 : result.length())
+						+ ") for taskId " + taskObject.getTaskId());
 			
 			// send reply
 			Reply reply = new Reply(taskObject.getTaskId(), taskObject.getBizType(), result);

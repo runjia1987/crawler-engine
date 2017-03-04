@@ -8,10 +8,10 @@ var charset = args.charset;
 log.info("url: " + url);
 
 var content = http.get(url, args);
-
 var doc = jsoup.parse(content)
 
-rs.rs.push( doc.select("div#itemInfo div#name h1").get(0).text() )
+var elements = doc.select("div.product-intro div.itemInfo-wrap div.sku-name")
+rs.rs.push( elements.get(0).text() )
 rs.status.push('SUCCESS')
 
 return rs;

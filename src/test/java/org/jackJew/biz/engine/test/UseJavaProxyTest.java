@@ -42,4 +42,29 @@ public class UseJavaProxyTest {
 			System.out.println("catch exception. " + BaseUtils.getSimpleExMsg(ex));
 		}
 	}
+	
+	@Test
+	public void testDangdangUse() throws Exception {
+		ClassLoader cl = Thread.currentThread().getContextClassLoader();
+		InputStream inputStream = cl.getResourceAsStream("scripts/dangdang_productName.js");
+		String script = IOUtils.toString(inputStream, "UTF-8");
+		IOUtils.closeQuietly(inputStream);
+		
+		System.out.println("Executing...");
+		JsEngine jsEngine = JsEngineRhino.getInstance();
+
+		String currentUrl = "http://product.dangdang.com/1483475273.html";
+		System.out.println("url: " + currentUrl);
+		JsonObject config = new JsonObject();
+		config.addProperty("url", currentUrl);
+		config.addProperty("charset", "GBK");
+
+		try {
+			String result = jsEngine.runScript2JSON(
+					String.format("(function(args){%s})(%s);", script, config.toString()));
+			System.out.println(result);
+		} catch (Exception ex) {
+			System.out.println("catch exception. " + BaseUtils.getSimpleExMsg(ex));
+		}
+	}
 }

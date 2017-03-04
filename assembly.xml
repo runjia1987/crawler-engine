@@ -11,6 +11,7 @@
   		<outputDirectory>./libs</outputDirectory>
   		<excludes>
   			<exclude>junit*.jar</exclude>
+  			<exclude>hamcrest-*.jar</exclude>
   		</excludes>
   	</fileSet>
   </fileSets>
