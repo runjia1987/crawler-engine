@@ -62,6 +62,7 @@ public class EngineClient {
 	         public void handleDelivery(String consumerTag, Envelope envelope,
 	                 AMQP.BasicProperties properties, byte[] body)  throws IOException {
 	             new Task(body).process();
+	             channel.basicAck(envelope.getDeliveryTag(), false);
 	         }
 
 			 @Override
@@ -69,7 +70,7 @@ public class EngineClient {
 			 	logger.error(CLIENT_NAME + " consumer on queue " + queueName + " get cancel signal.");
 			 }
 	     };
-		channel.basicConsume(queueName, true, consumer);
+		channel.basicConsume(queueName, false, consumer);
 		// add hook when process exits or is interrupted.
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
         	try {
