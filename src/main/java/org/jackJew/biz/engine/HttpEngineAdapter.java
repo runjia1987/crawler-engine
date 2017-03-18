@@ -58,7 +58,7 @@ public class HttpEngineAdapter {
 	public final static String CONFIG_HEADER_CHARSET = "charset";
 	public final static String CONFIG_BIZ_TYPE = "bizType";
 	
-	private final List<String> LONG_TIME_BIZ_TYPES = new ArrayList<String>();
+	private final List<String> LONG_TIME_BIZ_TYPES = new ArrayList<>();
 	
 	
 	/**
@@ -115,8 +115,7 @@ public class HttpEngineAdapter {
 		if(!BaseUtils.isEmpty(proxyHost)) {
 			builder.setProxy(new HttpHost(proxyHost, Integer.valueOf(proxyPort)));			
 		}
-		CloseableHttpClient httpClient = builder.build();
-		return httpClient;
+		return builder.build();
 	}
 
 	public ResponseConverter get(String url) throws Exception {
@@ -150,7 +149,7 @@ public class HttpEngineAdapter {
 				}
 			}
 		}
-		if (lastException != null && lastException instanceof HttpHostConnectException) {
+		if (lastException instanceof HttpHostConnectException) {
 			throw lastException; // server connection fail
 		}
 		throw new HttpException("request fail " + url);
@@ -172,7 +171,7 @@ public class HttpEngineAdapter {
 			}
 		}
 		// application/x-www-form-urlencoded data
-		List<NameValuePair> values = new ArrayList<NameValuePair>();
+		List<NameValuePair> values = new ArrayList<>();
 		if (params != null) {
 			for (Entry<String, String> entry : params.entrySet()) {
 				values.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
@@ -199,7 +198,7 @@ public class HttpEngineAdapter {
 				}
 			}
 		}
-		if (lastException != null && lastException instanceof HttpHostConnectException) {
+		if (lastException instanceof HttpHostConnectException) {
 			throw lastException; // server connection fail
 		}
 		throw new HttpException("request fail " + url);
@@ -214,7 +213,7 @@ public class HttpEngineAdapter {
 			
 			Header[] headers = response.getAllHeaders();
 			if(headers != null) {
-				Map<String, String> headersMap = new HashMap<String, String>(headers.length, 1);
+				Map<String, String> headersMap = new HashMap<>(headers.length, 1);
 				for (Header h : headers) {
 					headersMap.put(h.getName(), h.getValue());
 				}

@@ -76,8 +76,7 @@ public class JsEngineNashorn implements JsEngine {
 	@Override
 	public Object runScript(String script) {
 		try {
-			Object result = scriptEngine.eval(script, scriptContext);
-			return result;
+			return scriptEngine.eval(script, scriptContext);
 		} catch (Exception e) {
 			logger.error("", e);
 			return null;
