@@ -1,16 +1,18 @@
-net start RabbitMQ
+start command:
+rabbitmq-server -detached
 
 rabbitmqctl -q status
 rabbitmqctl list_queues
 
 rabbitmq-plugins enable rabbitmq_management
-http://127.0.0.1:15672
 
-add virtual host task_vh;
-add user runjia:runjia;
-add persmission;
-add mq_task_q, mq_task_reply_q with routingKey to exchange "amqp.direct";
-add exchange "script_exch" with type "fanout"; used as topic;
+access management web UI: http://127.0.0.1:15672
 
+1. add virtual host task_vh;
+2. add user runjia:runjia;
+3. add persmission for user under task_vh;
+4. create queue mq_task_q, mq_task_reply_q with routingKey to exchange "amqp.direct";
+5. create exchange "script_exch" with type "fanout", which will be used as topic;
 
+task format:
 {taskId:"123456", bizType: "dangdang_shopName", args: {url: "http://category.dangdang.com/cid4001867.html"}}

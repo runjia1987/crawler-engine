@@ -4,15 +4,15 @@ crawler-engine with <b>HTTP, proxy, JS-Java Interoperability, MQ task consumptio
 <h3>REQUIREMENTS</h3>
 <ul>
 <li>
-JDK 8 (note: if require <b>Nashorn</b>feature<i>ClassFilter</i>, then 1.8u45+ is mandatory);
+JDK 8 (note: if require <b>Nashorn</b> feature <i>ClassFilter</i>, then 1.8u45+ is mandatory);
 </li>
 
 <li>
-build tool:<a href="http://maven.apache.org/install.html" target="_blank">Maven</a> 3.2.x+;
+build tool: <a href="http://maven.apache.org/install.html" target="_blank">Maven</a> 3.2.x+;
 </li>
 
 <li>
-MQ service(Erlang OTP):<a href="http://www.rabbitmq.com/download.html" target="_blank">Rabbitmq</a> 3.6.0+;
+MQ service(Erlang OTP): <a href="http://www.rabbitmq.com/download.html" target="_blank">Rabbitmq</a> 3.6.0+;
 </li>
 
 <li>
@@ -20,13 +20,13 @@ Mozilla <a href="https://developer.mozilla.org/zh-CN/docs/Mozilla/Projects/Rhino
 </li>
 
 <li>
-Apache<a href="http://hc.apache.org/" target="_blank">HttpComponents</a>
+Apache<a href="http://hc.apache.org/" target="_blank"> HttpComponents</a>
 </li>
 </ul>
-<h3>Steps</h3>
+<h3>RUN STEPS</h3>
 
-1. PREPARE dev env: read rabbitmq_quickstart.txt;
-2. BUILD: mvn clean package -Dmaven.test.skip
-3. TESTCASE: mvn test
-4. RUN: java -jar engineClient.jar [clientName]
+1. BUILD: mvn clean package -Dmaven.test.skip, should have generated <i>target/engineClient.zip<i>;
+2. PREPARE: follow the instructions of rabbitmq_quickstart.txt;
+3. TESTCASE: mvn test;
+4. RUN: java -jar engineClient.jar [clientName] in <i><b>target</b><i> directory.
 
