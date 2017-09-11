@@ -128,7 +128,6 @@
 							<goal>copy-dependencies</goal>
 						</goals>
 						<configuration>
-							<useUniqueVersions>false</useUniqueVersions>
 							<outputDirectory>${project.build.directory}/libs</outputDirectory>
 							<excludeTransitive>false</excludeTransitive>
 							<stripVersion>false</stripVersion>

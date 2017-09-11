@@ -30,7 +30,7 @@ import com.rabbitmq.client.MessageProperties;
 public class EngineClient {
 	
 	private final static Logger logger = LoggerFactory.getLogger(EngineClient.class);
-	public static String CLIENT_NAME;
+	public static String CLIENT_NAME = "dryRun";
 	
 	private final static int threadPoolSize = Integer.valueOf(PropertyReader.getProperty("threadPoolSize"));
 	public static final ThreadPoolExecutor pool = new ThreadPoolExecutor(threadPoolSize, threadPoolSize,

@@ -4,7 +4,7 @@ crawler-engine with <b>HTTP, proxy, JS-Java Interoperability, MQ task consumptio
 <h3>REQUIREMENTS</h3>
 <ul>
 <li>
-JDK 8 (note: if require <b>Nashorn</b> feature <i>ClassFilter</i>, then 1.8u45+ is mandatory);
+JDK 8 (note: if require Nashorn feature <b>ClassFilter</b>, then 1.8u45+ is mandatory);
 </li>
 
 <li>
@@ -25,8 +25,8 @@ Apache<a href="http://hc.apache.org/" target="_blank"> HttpComponents</a>
 </ul>
 <h3>RUN STEPS</h3>
 
-1. BUILD: mvn clean package -Dmaven.test.skip, should have generated <i>target/engineClient.zip<i>;
+1. BUILD: mvn clean package -Dmaven.test.skip, should have generated <i>target/engineClient.zip</i>;
 2. PREPARE: follow the instructions of rabbitmq_quickstart.txt;
 3. TESTCASE: mvn test;
-4. RUN: java -jar engineClient.jar [clientName] in <i><b>target</b><i> directory.
+4. RUN: java -jar engineClient.jar [clientName] in <i><b>target</b></i> directory.
 
