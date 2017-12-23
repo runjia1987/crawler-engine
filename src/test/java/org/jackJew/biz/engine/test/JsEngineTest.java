@@ -19,7 +19,7 @@ import com.google.gson.JsonObject;
  */
 public class JsEngineTest {
 	
-	private final int max = 20;
+	private final int max = 200;
 
 	@Test
 	public void testNashornJS() {

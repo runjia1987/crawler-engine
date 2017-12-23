@@ -125,8 +125,6 @@ public class JsEngineRhino implements JsEngine {
 		Context context = globalContextFactory.enterContext();
 		try {
 			return context.evaluateString(scriptObject, script, null, 0, null);
-		} catch (Exception ex) {
-			throw ex;
 		} finally {
 			Context.exit();
 		}		
@@ -134,12 +132,7 @@ public class JsEngineRhino implements JsEngine {
 
 	@Override
 	public String runScript2JSON(String script) throws Exception {
-		try {
-			Object rawResult = runScript(script);
-			return GsonUtils.toJson(rawResult);
-		} catch (Exception ex) {
-			throw ex;
-		}
+		return GsonUtils.toJson(runScript(script));
 	}
 
 	@Override

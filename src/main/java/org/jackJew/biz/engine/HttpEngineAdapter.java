@@ -22,6 +22,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
@@ -83,7 +84,7 @@ public class HttpEngineAdapter {
 		}
 	}
 
-	private CloseableHttpClient createClient(Map<String, String> config) {
+	private CloseableHttpClient createHttpClient(Map<String, String> config) {
 		if(config == null) {
 			config = new HashMap<>();
 		}		
@@ -133,26 +134,7 @@ public class HttpEngineAdapter {
 				get.addHeader(entry.getKey(), entry.getValue());
 			}
 		}
-		Exception lastException = null;
-		for (int i = 0; i < max_retry_times; i++) {
-			try (CloseableHttpClient httpClient = createClient(config);
-				 CloseableHttpResponse response = httpClient.execute(get);
-				) {
-				return convertResponse(response, config == null ? null : config.get(CONFIG_HEADER_CHARSET));
-			} catch (Exception e) {
-				lastException = e;
-				logger.error("", e);				
-				if (i == max_retry_times - 1) {
-					logger.info("Retry failed.");
-				} else {
-					logger.info("Retrying request.");
-				}
-			}
-		}
-		if (lastException instanceof HttpHostConnectException) {
-			throw lastException; // server connection fail
-		}
-		throw new HttpException("request fail " + url);
+		return processResponse(config, get, url);
 	}
 
 	public ResponseConverter post(String url, Map<String, String> params) throws Exception {
@@ -182,11 +164,17 @@ public class HttpEngineAdapter {
 		} catch (UnsupportedEncodingException e) {
 			// swallow
 		}
+		return processResponse(config, post, url);
+	}
+
+	private ResponseConverter processResponse(Map<String, String> config,
+																						HttpUriRequest request,
+																						String url) throws Exception {
 		Exception lastException = null;
 		for (int i = 0; i < max_retry_times; i++) {
-			try (CloseableHttpClient httpClient = createClient(config);
-				 CloseableHttpResponse response = httpClient.execute(post);
-				) {
+			try (CloseableHttpClient httpClient = createHttpClient(config);
+					 CloseableHttpResponse response = httpClient.execute(request);
+			) {
 				return convertResponse(response, config == null ? null : config.get(CONFIG_HEADER_CHARSET));
 			} catch (Exception e) {
 				lastException = e;
@@ -202,7 +190,7 @@ public class HttpEngineAdapter {
 			throw lastException; // server connection fail
 		}
 		throw new HttpException("request fail " + url);
-	}	
+	}
 	
 	private ResponseConverter convertResponse(CloseableHttpResponse response, String charset) {
 		ResponseConverter responseConverter = new ResponseConverter();
